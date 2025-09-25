@@ -20,6 +20,8 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import ExitModal from "../modal/exit-modal";
 import { signOut } from "next-auth/react";
 import HomeIcon from "@mui/icons-material/Home";
+import { IconButton } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 
 const menuItems = [
   {
@@ -131,11 +133,40 @@ export default function Sidebar({ isOpen = true }) {
     sessionStorage.clear();
   };
 
+  function stringToColor(string) {
+    let hash = 0;
+    let i;
+
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    let color = "#";
+
+    for (i = 0; i < 3; i += 1) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += `00${value.toString(16)}`.slice(-2);
+    }
+    /* eslint-enable no-bitwise */
+
+    return color;
+  }
+
+  function stringAvatar(name) {
+    return {
+      sx: {
+        bgcolor: stringToColor(name),
+      },
+      children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
+    };
+  }
+
   return (
     <aside
       className={`${
         isOpen ? "w-[330px]" : "w-[80px]"
-      } h-screen bg-white px-[16px] py-[25px] transition-all duration-300 overflow-y-auto flex flex-col justify-between`}
+      } h-screen bg-white px-[16px] py-[25px] transition-all duration-300 overflow-y-auto flex flex-col justify-between font-manrope`}
     >
       <div>
         {/* LOGO */}
@@ -147,7 +178,7 @@ export default function Sidebar({ isOpen = true }) {
         </div>
 
         {/* MENU */}
-        <List sx={{ fontFamily: "DM Sans, sans-serif", color: "#A0AEC0" }}>
+        <List sx={{ fontFamily: "Lato, sans-serif", color: "#A0AEC0" }}>
           {menuItems.map((item, index) => {
             const isActive = router.pathname === item.path;
             const isAnySubmenuActive =
@@ -194,7 +225,7 @@ export default function Sidebar({ isOpen = true }) {
                   {isOpen && (
                     <Typography
                       sx={{
-                        fontFamily: "DM Sans, sans-serif",
+                        fontFamily: "Manrope, sans-serif",
                         fontSize: "18px",
                         marginLeft: "12px",
                       }}
@@ -246,7 +277,13 @@ export default function Sidebar({ isOpen = true }) {
                               isSubActive ? "bg-[#2D3748]" : "bg-[#A0AEC0]"
                             }`}
                           ></div>
-                          <Typography sx={{ fontSize: "16px", ml: 1 }}>
+                          <Typography
+                            sx={{
+                              fontSize: "16px",
+                              ml: 1,
+                              fontFamily: "Manrope, sans-serif",
+                            }}
+                          >
                             {sub.text}
                           </Typography>
                         </ListItemButton>
@@ -266,33 +303,15 @@ export default function Sidebar({ isOpen = true }) {
           onClick={() => setOpenExitModal(true)}
           sx={{
             borderRadius: "8px",
-            backgroundColor: "#FCD8D3",
+            backgroundColor: "#6E39CB",
             color: "#E53E3E",
             justifyContent: isOpen ? "flex-start" : "center",
             px: isOpen ? 2 : 0,
           }}
         >
-          <ListItemIcon
-            sx={{
-              minWidth: "auto",
-              color: "#991300",
-              justifyContent: "center",
-            }}
-          >
-            <ExitToAppIcon />
-          </ListItemIcon>
-          {isOpen && (
-            <Typography
-              sx={{
-                fontFamily: "DM Sans, sans-serif",
-                color: "#991300",
-                fontSize: "18px",
-                marginLeft: "12px",
-              }}
-            >
-              Выход
-            </Typography>
-          )}
+          <IconButton>
+            <Avatar />
+          </IconButton>
         </ListItemButton>
       </div>
 

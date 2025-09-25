@@ -6,7 +6,11 @@ module.exports = {
     "./app/**/*.{js,jsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        manrope: ["Manrope", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };
