@@ -22,6 +22,12 @@ import { signOut } from "next-auth/react";
 import HomeIcon from "@mui/icons-material/Home";
 import { IconButton } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Link from "next/link";
+
+function Example() {
+  return <MoreVertIcon />;
+}
 
 const menuItems = [
   {
@@ -91,19 +97,10 @@ const menuItems = [
     icon: <SchoolRoundedIcon />,
     path: "/dashboard/user-profile",
   },
-  {
-    text: "Расписание",
-    icon: <EventNoteIcon />,
-    path: "/dashboard/schedule",
-  },
-  {
-    text: "Настройки",
-    icon: <SettingsRoundedIcon />,
-    path: "/dashboard/settings",
-  },
 ];
 
 export default function Sidebar({ isOpen = true }) {
+  const [open, setOpen] = useState(false);
   const [openExitModal, setOpenExitModal] = useState(false);
   const [openSubmenus, setOpenSubmenus] = useState({});
   const router = useRouter();
@@ -298,21 +295,87 @@ export default function Sidebar({ isOpen = true }) {
       </div>
 
       {/* LOGOUT */}
-      <div className="mb-4">
+      <div className="mb-4 w-full relative">
         <ListItemButton
-          onClick={() => setOpenExitModal(true)}
+          onClick={() => setOpen((prev) => !prev)}
           sx={{
             borderRadius: "8px",
             backgroundColor: "#6E39CB",
-            color: "#E53E3E",
+
             justifyContent: isOpen ? "flex-start" : "center",
-            px: isOpen ? 2 : 0,
+
+            "&:hover": { backgroundColor: "#6E39CB" },
           }}
         >
-          <IconButton>
-            <Avatar />
-          </IconButton>
+          <div
+            className={`flex ${
+              !isOpen
+                ? "justify-center items-center"
+                : "justify-between items-start"
+            } w-full`}
+          >
+            <div className="flex gap-2 justify-center items-center">
+              <Avatar
+                src="/images/avatar.jpg"
+                sx={{
+                  width: "30px",
+                  height: "30px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              />
+
+              {isOpen && (
+                <div className="text-white">
+                  <h4 className="text-[15px]">John Johnson</h4>
+                  <p className="text-sm">john@commerce.com</p>
+                </div>
+              )}
+            </div>
+
+            {isOpen && (
+              <MoreVertIcon
+                sx={{
+                  marginRight: "-10px",
+                  color: "white",
+                  width: "20px",
+                }}
+              />
+            )}
+          </div>
         </ListItemButton>
+
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, translateY: "100px" }}
+            animate={{ opacity: 1, translateY: "0px" }}
+            exit={{ opacity: 0, translateY: "10px" }}
+            className="absolute -top-[95px]  left-0 right-0 "
+          >
+            <div className="border border-gray-200 rounded-lg gap-y-[8px] shadow-md">
+              <Link
+                href={"#"}
+                className={`flex p-[8px] hover:bg-[#F5F5F5] items-center ${
+                  isOpen ? "gap-2" : "justify-center"
+                } transition-all duration-300`}
+              >
+                <SettingsRoundedIcon />
+                {isOpen && <h4>Настройки</h4>}
+              </Link>
+              <div
+                onClick={() => setOpenExitModal(true)}
+                href={"#"}
+                className={`flex p-[8px] hover:bg-[#F5F5F5] items-center ${
+                  isOpen ? "gap-2" : "justify-center"
+                } transition-all duration-300`}
+              >
+                <ExitToAppIcon />
+                {isOpen && <h4>Выйти</h4>}
+              </div>
+            </div>
+          </motion.div>
+        )}
       </div>
 
       <ExitModal
