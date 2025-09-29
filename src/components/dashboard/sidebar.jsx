@@ -310,7 +310,7 @@ export default function Sidebar({ isOpen = true }) {
           }}
         >
           <IconButton>
-            <Avatar />
+            <Avatar sx={{ width: "30px", height: "30px" }} />
           </IconButton>
         </ListItemButton>
       </div>
