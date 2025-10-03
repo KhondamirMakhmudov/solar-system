@@ -24,6 +24,7 @@ import { IconButton } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Link from "next/link";
+import RecyclingIcon from "@mui/icons-material/Recycling";
 
 function Example() {
   return <MoreVertIcon />;
@@ -35,67 +36,40 @@ const menuItems = [
     icon: <HomeIcon />,
     path: "/dashboard/main",
   },
+
   {
-    text: "Структура организации",
-    icon: <MediationIcon />,
+    text: "Экологические показатели станции",
+    icon: <RecyclingIcon />,
     submenu: [
       {
-        text: "Справочник",
-        path: "/dashboard/panels",
+        text: "Все показатели станции",
+        path: "/dashboard/eco-system-stations/all",
       },
       {
-        text: "Руководства управлении",
-        path: "/dashboard/structure-organizations/management-organizations",
+        text: "AO TES",
+        path: "/dashboard/eco-system-stations/aotes",
       },
       {
-        text: "Место работы",
-        path: "/dashboard/structure-organizations/workplace",
+        text: "Ташкентская ТЭЦ",
+        path: "/dashboard/eco-system-stations/tashkent",
+      },
+      {
+        text: "Мубарекская ТЭЦ",
+        path: "/dashboard/eco-system-stations/muborak",
+      },
+      {
+        text: "Сырдарьинская ТЭС",
+        path: "/dashboard/eco-system-stations/syrdarya",
+      },
+      {
+        text: "Ферганская ТЭЦ",
+        path: "/dashboard/eco-system-stations/fergana",
+      },
+      {
+        text: "Узэнергосозлаш",
+        path: "/dashboard/eco-system-stations/uzenergosozlash",
       },
     ],
-  },
-  {
-    text: "Точки контроля",
-    icon: <SecurityIcon />,
-    submenu: [
-      {
-        text: "Устройства (камеры)",
-        icon: <CameraAltIcon />,
-        path: "/dashboard/devices",
-      },
-      {
-        text: "Точки доступа",
-        icon: <WifiIcon />,
-        path: "/dashboard/access-points",
-      },
-      {
-        text: "Контрольные точки",
-        icon: <SecurityIcon />,
-        path: "/dashboard/checkpoints",
-      },
-    ],
-  },
-  {
-    text: "Отчёты",
-    icon: <AssessmentIcon />,
-    submenu: [
-      {
-        text: "по сотрудникам",
-        path: "/dashboard/reports/employee-id",
-      },
-      {
-        text: "по структура организации",
-        path: "/dashboard/reports",
-      },
-      {
-        text: "всех сотрудников",
-        path: "/dashboard/reports/all-employees",
-      },
-    ],
-  },
-  {
-    text: "Обучение и квалификация",
-    icon: <SchoolRoundedIcon />,
-    path: "/dashboard/user-profile",
   },
 ];
 
@@ -258,31 +232,55 @@ export default function Sidebar({ isOpen = true }) {
                           onClick={() => router.push(sub.path)}
                           selected={isSubActive}
                           sx={{
-                            borderRadius: "6px",
+                            borderRadius: "8px",
                             my: 0.5,
-                            color: isSubActive ? "#DECCFE" : "#A0AEC0",
+                            color: isSubActive ? "#9D66FD" : "#A78BFA",
                             backgroundColor: isSubActive
-                              ? "#EDF2F7"
+                              ? "#9F69FB"
                               : "transparent",
                             "&:hover": {
-                              backgroundColor: "#F7FAFC",
+                              backgroundColor: "#E9D5FF",
+                              color: "#9D66FD",
                             },
                           }}
                         >
-                          <div
-                            className={`w-[7px] h-[7px] rounded-full ${
-                              isSubActive ? "bg-[#2D3748]" : "bg-[#A0AEC0]"
-                            }`}
-                          ></div>
-                          <Typography
-                            sx={{
-                              fontSize: "16px",
-                              ml: 1,
-                              fontFamily: "Manrope, sans-serif",
-                            }}
-                          >
-                            {sub.text}
-                          </Typography>
+                          {/* Icon o‘rniga */}
+                          <div className="flex items-center">
+                            {isSubActive ? (
+                              <span className="text-[#9D66FD]">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="w-4 h-4"
+                                  fill="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <circle cx="12" cy="12" r="6" />
+                                </svg>
+                              </span>
+                            ) : (
+                              <span className="text-[#A78BFA]">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="w-4 h-4"
+                                  fill="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <circle cx="12" cy="12" r="4" />
+                                </svg>
+                              </span>
+                            )}
+
+                            <Typography
+                              sx={{
+                                fontSize: "15px",
+                                ml: 1.5,
+                                fontFamily: "Manrope, sans-serif",
+                                fontWeight: isSubActive ? 600 : 400,
+                              }}
+                            >
+                              {sub.text}
+                            </Typography>
+                          </div>
                         </ListItemButton>
                       );
                     })}
@@ -307,10 +305,6 @@ export default function Sidebar({ isOpen = true }) {
             "&:hover": { backgroundColor: "#6E39CB" },
           }}
         >
-          <IconButton>
-            <Avatar sx={{ width: "30px", height: "30px" }} />
-          </IconButton>
-
           <div
             className={`flex ${
               !isOpen
