@@ -76,7 +76,9 @@ const GaugeCard = ({ name, value, min, max, unit }) => {
     <div className="bg-white rounded-2xl shadow-md p-4 flex flex-col items-center hover:shadow-lg transition border border-[#C9AAFE]">
       <ReactECharts option={option} style={{ height: 160, width: "100%" }} />
       <div className="mt-2 text-center">
-        <p className="text-sm font-semibold text-gray-700">{name}</p>
+        <p className="text-sm font-semibold text-gray-700 font-manrope">
+          {name}
+        </p>
         <p className="text-lg font-bold text-indigo-600">
           {value} <span className="text-sm text-gray-500">{unit}</span>
         </p>

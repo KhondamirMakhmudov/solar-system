@@ -12,7 +12,7 @@ export default function DashboardLayout({ children, headerTitle }) {
     <div className="flex w-full h-screen">
       <Head>
         {" "}
-        <title>{headerTitle} | СКУД</title>
+        <title>{headerTitle} | ECO</title>
       </Head>
       <Sidebar isOpen={isSidebarOpen} />
 

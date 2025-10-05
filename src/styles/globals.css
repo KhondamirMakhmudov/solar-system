@@ -13,6 +13,10 @@ body {
   font-family: "Manrope", sans-serif;
 }
 
+.manrope {
+  font-family: "Manrope", sans-serif;
+}
+
 .regions-container {
   display: grid;
   gap: 24px;

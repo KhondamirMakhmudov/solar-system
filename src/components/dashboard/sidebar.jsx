@@ -40,36 +40,7 @@ const menuItems = [
   {
     text: "Экологические показатели станции",
     icon: <RecyclingIcon />,
-    submenu: [
-      {
-        text: "Все показатели станции",
-        path: "/dashboard/eco-system-stations/all",
-      },
-      {
-        text: "AO TES",
-        path: "/dashboard/eco-system-stations/aotes",
-      },
-      {
-        text: "Ташкентская ТЭЦ",
-        path: "/dashboard/eco-system-stations/tashkent",
-      },
-      {
-        text: "Мубарекская ТЭЦ",
-        path: "/dashboard/eco-system-stations/muborak",
-      },
-      {
-        text: "Сырдарьинская ТЭС",
-        path: "/dashboard/eco-system-stations/syrdarya",
-      },
-      {
-        text: "Ферганская ТЭЦ",
-        path: "/dashboard/eco-system-stations/fergana",
-      },
-      {
-        text: "Узэнергосозлаш",
-        path: "/dashboard/eco-system-stations/uzenergosozlash",
-      },
-    ],
+    path: "/dashboard/eco-system-stations/all",
   },
 ];
 
