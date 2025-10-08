@@ -4,6 +4,7 @@ import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
+import Title from "@/components/title";
 
 const EcologyPage = () => {
   const [data, setData] = useState([]);
@@ -22,10 +23,19 @@ const EcologyPage = () => {
         if (!parsed.name) return;
 
         setData((prev) => {
-          const existing = prev.filter(
-            (item) => item.unique_key !== parsed.unique_key
+          const existingIndex = prev.findIndex(
+            (item) => item.unique_key === parsed.unique_key
           );
-          return [...existing, parsed];
+
+          if (existingIndex !== -1) {
+            // Обновляем существующий элемент на том же месте
+            const newData = [...prev];
+            newData[existingIndex] = parsed;
+            return newData;
+          } else {
+            // Добавляем новый элемент
+            return [...prev, parsed];
+          }
         });
       } catch {
         console.warn("⚠️ Не JSON:", event.data);
@@ -41,7 +51,7 @@ const EcologyPage = () => {
 
   return (
     <DashboardLayout headerTitle="Экологические показатели станции">
-      <div className="p-6 manrope min-h-screen bg-white">
+      <div className="p-6 manrope min-h-screen ">
         {names.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {names.map((name) => {
@@ -64,9 +74,7 @@ const EcologyPage = () => {
                 >
                   {/* Заголовок */}
                   <div className="flex justify-between items-center mb-3">
-                    <h2 className="text-lg font-semibold text-gray-800 truncate">
-                      {name}
-                    </h2>
+                    <Title>{name}</Title>
                     <span className="text-sm text-gray-500">
                       {items.length} показателей
                     </span>
