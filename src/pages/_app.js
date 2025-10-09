@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ClientOnlyToaster from "@/components/toast";
 import { SessionProvider } from "next-auth/react";
 import reactQueryClient from "@/config/react-query";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "next-themes";
 import CssBaseline from "@mui/material/CssBaseline";
 import "@/styles/globals.css";
 
@@ -19,7 +19,7 @@ export default function App({
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps?.dehydratedState}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>

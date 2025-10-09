@@ -2,6 +2,17 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 
+@theme {
+  --color-background: white;
+  --color-foreground: black;
+}
+@variant dark (&:where(.dark, [data-theme="dark"]));
+
+@theme dark {
+  --color-background: #0a0a0a;
+  --color-foreground: #fafafa;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

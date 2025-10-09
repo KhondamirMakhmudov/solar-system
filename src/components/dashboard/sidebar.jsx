@@ -42,6 +42,12 @@ const menuItems = [
     icon: <RecyclingIcon />,
     path: "/dashboard/eco-system-stations/all",
   },
+
+  {
+    text: "Настройки",
+    icon: <SettingsRoundedIcon />,
+    path: "/dashboard/settings",
+  },
 ];
 
 export default function Sidebar({ isOpen = true }) {
