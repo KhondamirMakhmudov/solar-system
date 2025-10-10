@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="h-screen">
       <div className="grid grid-cols-12 gap-2 place-items-center bg-[#0F0A1E] manrope h-full">
-        <div className="lg:col-span-6 col-span-12 flex justify-center ">
+        <div className="lg:col-span-6 col-span-12 flex justify-center p-[32px] bg-[#1A132A] rounded-md">
           <div className="w-[430px]">
             <Typography
               variant="h4"
