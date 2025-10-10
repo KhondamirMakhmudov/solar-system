@@ -3,7 +3,7 @@
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 const StatItem = ({ value, label }) => (
   <div className="text-center">
-    <div className="text-[1.3rem] font-bold text-gray-800 mb-1">{value}</div>
+    <div className="text-[1.3rem] font-bold text-white mb-1">{value}</div>
     <div className="text-sm text-gray-500 font-medium">{label}</div>
   </div>
 );
@@ -63,7 +63,7 @@ const InverterCard = ({ inverter }) => {
 };
 
 const RegionCard = ({ region, isExpanded, onToggle }) => (
-  <div className="bg-white rounded-2xl overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-0.5">
+  <div className="border border-[#555555] rounded-2xl overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-0.5 manrope">
     <div
       className="bg-gradient-to-br bg-[#A877FD] text-white px-6 py-5 cursor-pointer flex justify-between items-center"
       onClick={onToggle}
@@ -77,7 +77,7 @@ const RegionCard = ({ region, isExpanded, onToggle }) => (
         <KeyboardArrowDownIcon />
       </div>
     </div>
-    <div className="grid gap-4 px-6 py-5 bg-[#ffffff] sm:grid-cols-2 md:grid-cols-3">
+    <div className="grid gap-4 px-6 py-5 bg-[#1A132A] text-white  sm:grid-cols-2 md:grid-cols-3">
       <StatItem value={region.inverterCount} label="Инверторов" />
       <StatItem value={region.projectCapacity} label="Проектная мощность" />
       <StatItem value={region.totalGeneration} label="Общая выработка" />

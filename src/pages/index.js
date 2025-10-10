@@ -6,10 +6,15 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="h-screen">
-      <div className="grid grid-cols-12 gap-2 place-items-center  h-full">
-        <div className="col-span-6 flex justify-center ">
+      <div className="grid grid-cols-12 gap-2 place-items-center bg-[#0F0A1E] manrope h-full">
+        <div className="lg:col-span-6 col-span-12 flex justify-center ">
           <div className="w-[430px]">
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              sx={{ color: "white" }}
+            >
               Войти в систему
             </Typography>
 
@@ -44,7 +49,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="col-span-6 bg-[#6E39CB] h-screen y-[10px] p-2 w-full flex items-center justify-center">
+        <div className="col-span-6 bg-[#6E39CB] h-screen y-[10px] p-2 w-full lg:flex hidden items-center justify-center">
           <Image
             src={"/icons/solar-system.svg"}
             alt="solar"

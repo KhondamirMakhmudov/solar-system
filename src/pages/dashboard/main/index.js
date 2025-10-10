@@ -147,7 +147,7 @@ const Index = () => {
   }, []);
   return (
     <DashboardLayout headerTitle={"Главная"}>
-      <div className="grid grid-cols-12 gap-4 my-[20px] bg-white p-[20px] rounded-lg shadow-sm divide-x divide-gray-200">
+      <div className="grid grid-cols-12 gap-4 my-[20px] bg-[#1A132A] shadow-md p-[20px] rounded-lg border border-[#555555] divide-x divide-[#555555] manrope">
         <StatCard
           title="Проектная мощность"
           percent="10.0%"
@@ -176,8 +176,8 @@ const Index = () => {
         />
       </div>
 
-      <div className="grid grid-cols-12 gap-4 my-[20px] bg-white p-[30px] shadow-sm replace-items-center rounded-lg">
-        <div className="col-span-12 mb-[15px]">
+      <div className="grid grid-cols-12 gap-4 my-[20px] bg-[#1A132A] p-[30px] border border-[#555555] shadow-sm replace-items-center rounded-lg">
+        <div className="col-span-12 mb-[15px] text-white">
           <Typography variant="h4">Мониторинг солнечных панелей</Typography>
         </div>
         <div className="col-span-6 h-[600px]">
@@ -196,44 +196,6 @@ const Index = () => {
             ))}
           </div>
         </div>
-      </div>
-
-      <div className="flex items-center justify-center h-screen bg-gray-100">
-        <div className="relative w-40 h-60">
-          {/* Chimney */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-40 bg-gray-700 rounded-t-md"></div>
-
-          {/* Smoke (3 layers for realism) */}
-          <div className="absolute bottom-40 left-1/2 -translate-x-1/2">
-            <span className="block w-10 h-10 bg-gray-400 rounded-full opacity-70 animate-smoke"></span>
-          </div>
-          <div className="absolute bottom-44 left-1/2 -translate-x-1/2">
-            <span className="block w-12 h-12 bg-gray-300 rounded-full opacity-50 animate-smoke delay-200"></span>
-          </div>
-          <div className="absolute bottom-48 left-1/2 -translate-x-1/2">
-            <span className="block w-14 h-14 bg-gray-200 rounded-full opacity-40 animate-smoke delay-500"></span>
-          </div>
-        </div>
-
-        <style jsx>{`
-          .animate-smoke {
-            animation: rise 6s infinite;
-          }
-          @keyframes rise {
-            0% {
-              transform: translateY(0) scale(0.8);
-              opacity: 0.8;
-            }
-            50% {
-              transform: translateY(-60px) scale(1.2);
-              opacity: 0.4;
-            }
-            100% {
-              transform: translateY(-120px) scale(1.5);
-              opacity: 0;
-            }
-          }
-        `}</style>
       </div>
     </DashboardLayout>
   );

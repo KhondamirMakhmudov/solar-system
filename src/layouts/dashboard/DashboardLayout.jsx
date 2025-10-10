@@ -11,12 +11,12 @@ export default function DashboardLayout({ children, headerTitle }) {
   return (
     <div className="flex w-full h-screen">
       <Head>
-        {" "}
-        <title>{headerTitle} | ECO</title>
+        <title>{`${headerTitle || ""} | ECO`}</title>
       </Head>
+
       <Sidebar isOpen={isSidebarOpen} />
 
-      <main className="flex-1 p-6 bg-[#F4F7FEFF] overflow-auto">
+      <main className="flex-1 p-6 bg-[#1A1625] overflow-auto">
         <MainContentHeader toggleSidebar={toggleSidebar}>
           {headerTitle}
         </MainContentHeader>

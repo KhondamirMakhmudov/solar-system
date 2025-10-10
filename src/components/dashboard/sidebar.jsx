@@ -26,10 +26,6 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Link from "next/link";
 import RecyclingIcon from "@mui/icons-material/Recycling";
 
-function Example() {
-  return <MoreVertIcon />;
-}
-
 const menuItems = [
   {
     text: "Главная",
@@ -114,7 +110,7 @@ export default function Sidebar({ isOpen = true }) {
     <aside
       className={`${
         isOpen ? "w-[330px]" : "w-[80px]"
-      } h-screen bg-white px-[16px] py-[25px] transition-all duration-300 overflow-y-auto flex flex-col justify-between font-manrope`}
+      } h-screen bg-[#0F0A1E] px-[16px] py-[25px] transition-all duration-300 overflow-y-auto flex flex-col justify-between font-manrope`}
     >
       <div>
         {/* LOGO */}
@@ -270,7 +266,7 @@ export default function Sidebar({ isOpen = true }) {
       </div>
 
       {/* LOGOUT */}
-      <div className="mb-4 w-full relative">
+      <div className="mb-4 w-full manrope relative">
         <ListItemButton
           onClick={() => setOpen((prev) => !prev)}
           sx={{
@@ -328,10 +324,10 @@ export default function Sidebar({ isOpen = true }) {
             exit={{ opacity: 0, translateY: "10px" }}
             className="absolute -top-[95px]  left-0 right-0 "
           >
-            <div className="border border-gray-200 rounded-lg gap-y-[8px] shadow-md">
+            <div className="border border-[#555555] bg-[#1A132A] rounded-lg gap-y-[8px] shadow-md">
               <Link
                 href={"#"}
-                className={`flex p-[8px] hover:bg-[#F5F5F5] items-center ${
+                className={`flex p-[8px] hover:bg-[#312b3f] rounded-lg text-white items-center ${
                   isOpen ? "gap-2" : "justify-center"
                 } transition-all duration-300`}
               >
@@ -341,7 +337,7 @@ export default function Sidebar({ isOpen = true }) {
               <div
                 onClick={() => setOpenExitModal(true)}
                 href={"#"}
-                className={`flex p-[8px] hover:bg-[#F5F5F5] items-center ${
+                className={`flex p-[8px] hover:bg-[#312b3f] rounded-lg text-white items-center ${
                   isOpen ? "gap-2" : "justify-center"
                 } transition-all duration-300`}
               >
