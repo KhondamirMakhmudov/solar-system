@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const MapOfUz = ({ color = "#6635BC", props }) => {
+const MapOfUz = ({ color = "#6635BC", markersData = [] }) => {
   const [selectedRegion, setSelectedRegion] = useState(null);
-
   const [tooltip, setTooltip] = useState(null);
+  const [markers, setMarkers] = useState([]);
 
   const regionsData = {
     tashkent: { name: "Toshkent" },
@@ -22,13 +22,45 @@ const MapOfUz = ({ color = "#6635BC", props }) => {
     jizzax: { name: "Jizzax" },
   };
 
+  // Uzbekistan approximate bounds
+  const UZ_BOUNDS = {
+    minLat: 37.2,
+    maxLat: 45.6,
+    minLon: 56.0,
+    maxLon: 73.2,
+  };
+
+  // SVG viewBox dimensions
+  const SVG_WIDTH = 519;
+  const SVG_HEIGHT = 333;
+
+  // Convert lat/lon to SVG coordinates
+  const latLonToSVG = (lat, lon) => {
+    const x =
+      ((lon - UZ_BOUNDS.minLon) / (UZ_BOUNDS.maxLon - UZ_BOUNDS.minLon)) *
+      SVG_WIDTH;
+    const y =
+      ((UZ_BOUNDS.maxLat - lat) / (UZ_BOUNDS.maxLat - UZ_BOUNDS.minLat)) *
+      SVG_HEIGHT;
+    return { x, y };
+  };
+
+  useEffect(() => {
+    if (markersData && markersData.length > 0) {
+      const processedMarkers = markersData.map((item) => ({
+        ...item,
+        svgCoords: latLonToSVG(item.latitude, item.longitude),
+      }));
+      setMarkers(processedMarkers);
+    }
+  }, [markersData]);
+
   const handleMouseEnter = (regionKey, event) => {
     const region = regionsData[regionKey];
     if (region) {
       const { clientX, clientY } = event;
       setTooltip({
         name: region.name,
-
         x: clientX,
         y: clientY,
       });
@@ -42,11 +74,22 @@ const MapOfUz = ({ color = "#6635BC", props }) => {
   const handleRegionClick = (regionId) => {
     setSelectedRegion(regionId);
   };
+
+  const handleMarkerEnter = (marker, event) => {
+    const { clientX, clientY } = event;
+    setTooltip({
+      name: marker.name,
+      address: marker.address,
+      x: clientX,
+      y: clientY,
+      isMarker: true,
+    });
+  };
   return (
     <>
       {tooltip && (
         <div
-          className="absolute bg-gray-800 text-white text-sm p-2 rounded shadow-lg"
+          className="fixed bg-gray-800 text-white text-sm p-3 rounded-lg shadow-xl z-50 max-w-xs manrope"
           style={{
             top: tooltip.y + 10,
             left: tooltip.x + 10,
@@ -54,6 +97,9 @@ const MapOfUz = ({ color = "#6635BC", props }) => {
           }}
         >
           <p className="font-semibold">{tooltip.name}</p>
+          {tooltip.address && (
+            <p className="text-xs text-gray-300 mt-1">{tooltip.address}</p>
+          )}
         </div>
       )}
       <svg
@@ -243,6 +289,32 @@ const MapOfUz = ({ color = "#6635BC", props }) => {
             onMouseLeave={handleMouseLeave}
             fill={selectedRegion === "Sirdaryo" ? "#0256BA" : "#6635BC"}
           />
+          {/* Render markers */}
+          {markers.map((marker, index) => (
+            <g key={marker.id || index}>
+              {/* Marker pin */}
+              <circle
+                cx={marker.svgCoords.x}
+                cy={marker.svgCoords.y}
+                r="5"
+                fill="#FF0000"
+                stroke="#FFFFFF"
+                strokeWidth="2"
+                className="cursor-pointer transition-all duration-200 hover:r-7 manrope"
+                onMouseEnter={(e) => handleMarkerEnter(marker, e)}
+                onMouseLeave={handleMouseLeave}
+              />
+              {/* Optional: Add a pin drop shadow */}
+              <circle
+                cx={marker.svgCoords.x}
+                cy={marker.svgCoords.y}
+                r="8"
+                fill="#FF0000"
+                opacity="0.3"
+                className="pointer-events-none"
+              />
+            </g>
+          ))}
         </g>
         <defs>
           <clipPath id="clip0_397_16207">

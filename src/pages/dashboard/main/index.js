@@ -5,6 +5,10 @@ import MapOfUz from "@/components/map-country";
 import { Typography } from "@mui/material";
 import RegionCard from "@/components/card/RegionCard";
 import { useEffect, useState } from "react";
+import useGetPythonQuery from "@/hooks/python/useGetQuery";
+import { KEYS } from "@/constants/key";
+import { URLS } from "@/constants/url";
+import { get } from "lodash";
 
 const Index = () => {
   const [expandedRegions, setExpandedRegions] = useState({});
@@ -115,6 +119,15 @@ const Index = () => {
     { icon: "💰", value: "₽284,500", label: "Общий доход" },
   ];
 
+  const {
+    data: company,
+    isLoading: isLoadingCompany,
+    isFetching: isFetchingCompany,
+  } = useGetPythonQuery({
+    key: KEYS.company,
+    url: URLS.company,
+  });
+
   const toggleRegion = (regionId) => {
     setExpandedRegions((prev) => ({
       ...prev,
@@ -147,7 +160,7 @@ const Index = () => {
   }, []);
   return (
     <DashboardLayout headerTitle={"Главная"}>
-      <div className="grid grid-cols-12 gap-4 my-[20px] bg-[#1A132A] shadow-md p-[20px] rounded-lg border border-[#555555] divide-x divide-[#555555] manrope">
+      {/* <div className="grid grid-cols-12 gap-4 my-[20px] bg-[#1A132A] shadow-md p-[20px] rounded-lg border border-[#555555] divide-x divide-[#555555] manrope">
         <StatCard
           title="Проектная мощность"
           percent="10.0%"
@@ -174,27 +187,14 @@ const Index = () => {
           value={1056.54}
           unit="кВт"
         />
-      </div>
+      </div> */}
 
       <div className="grid grid-cols-12 gap-4 my-[20px] bg-[#1A132A] p-[30px] border border-[#555555] shadow-sm replace-items-center rounded-lg">
         <div className="col-span-12 mb-[15px] text-white">
           <Typography variant="h4">Мониторинг солнечных панелей</Typography>
         </div>
         <div className="col-span-6 h-[600px]">
-          <MapOfUz />
-        </div>
-
-        <div className="col-span-6">
-          <div className="regions-container">
-            {regionsData.map((region) => (
-              <RegionCard
-                key={region.id}
-                region={region}
-                isExpanded={expandedRegions[region.id]}
-                onToggle={() => toggleRegion(region.id)}
-              />
-            ))}
-          </div>
+          <MapOfUz markersData={get(company, "data.data")} />
         </div>
       </div>
     </DashboardLayout>

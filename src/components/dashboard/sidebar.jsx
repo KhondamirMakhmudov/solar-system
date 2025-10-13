@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { List, ListItemButton, ListItemIcon, Typography } from "@mui/material";
+import {
+  List,
+  ListItemButton,
+  ListItemIcon,
+  patch,
+  Typography,
+} from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -25,6 +31,7 @@ import Avatar from "@mui/material/Avatar";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Link from "next/link";
 import RecyclingIcon from "@mui/icons-material/Recycling";
+import LinkIcon from "@mui/icons-material/Link";
 
 const menuItems = [
   {
@@ -37,6 +44,12 @@ const menuItems = [
     text: "Экологические показатели станции",
     icon: <RecyclingIcon />,
     path: "/dashboard/eco-system-stations/all",
+  },
+
+  {
+    text: "Коннекты",
+    icon: <LinkIcon />,
+    path: "/dashboard/connects",
   },
 
   {

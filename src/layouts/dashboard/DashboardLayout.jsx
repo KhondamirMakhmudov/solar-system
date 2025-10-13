@@ -11,7 +11,7 @@ export default function DashboardLayout({ children, headerTitle }) {
   return (
     <div className="flex w-full h-screen">
       <Head>
-        <title>{`${headerTitle || ""} | ECO`}</title>
+        <title>{`${headerTitle || ""} | SCADA`}</title>
       </Head>
 
       <Sidebar isOpen={isSidebarOpen} />
