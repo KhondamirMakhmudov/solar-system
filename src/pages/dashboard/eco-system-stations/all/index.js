@@ -11,7 +11,7 @@ const EcologyPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const socket = new WebSocket("ws://10.20.6.64:80/ws");
+    const socket = new WebSocket("ws://10.40.9.25:8120/ws");
 
     socket.onopen = () => console.log("✅ WebSocket подключен");
 
