@@ -24,14 +24,18 @@ import {
 } from "@mui/icons-material";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import ExitModal from "../modal/exit-modal";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import HomeIcon from "@mui/icons-material/Home";
 import { IconButton } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import GroupIcon from "@mui/icons-material/Group";
 import Link from "next/link";
 import RecyclingIcon from "@mui/icons-material/Recycling";
 import LinkIcon from "@mui/icons-material/Link";
+import useGetPythonQuery from "@/hooks/python/useGetQuery";
+import { KEYS } from "@/constants/key";
+import { URLS } from "@/constants/url";
 
 const menuItems = [
   {
@@ -53,6 +57,12 @@ const menuItems = [
   },
 
   {
+    text: "Пользователи",
+    icon: <GroupIcon />,
+    path: "/dashboard/users",
+  },
+
+  {
     text: "Настройки",
     icon: <SettingsRoundedIcon />,
     path: "/dashboard/settings",
@@ -63,7 +73,22 @@ export default function Sidebar({ isOpen = true }) {
   const [open, setOpen] = useState(false);
   const [openExitModal, setOpenExitModal] = useState(false);
   const [openSubmenus, setOpenSubmenus] = useState({});
+  const { data: session } = useSession();
   const router = useRouter();
+
+  const {
+    data: getMe,
+    isLoading,
+    isFetching,
+  } = useGetPythonQuery({
+    key: KEYS.getMe,
+    url: URLS.getMe,
+    headers: {
+      Authorization: `Bearer ${session?.accessToken}`,
+      Accept: "application/json",
+    },
+    enabled: !!session?.accessToken,
+  });
 
   // 🔑 active submenu bo‘lsa parentni ochiq qilib qo‘yish
   useEffect(() => {

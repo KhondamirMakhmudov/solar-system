@@ -21,10 +21,12 @@ const MethodModal = ({
           transform: "translate(-50%, -50%)",
           width: width,
           height: height,
-          bgcolor: "white",
+          bgcolor: "#1F2937",
+          color: "white",
           boxShadow: 24,
           p: padding,
           borderRadius: "8px",
+          fontFamily: "Manrope",
         }}
       >
         {/* Title va X icon joylashuvi */}
@@ -39,7 +41,11 @@ const MethodModal = ({
           <Typography variant="h6">{title}</Typography>
 
           {showCloseIcon && (
-            <IconButton onClick={closeClick} size="small">
+            <IconButton
+              onClick={closeClick}
+              size="small"
+              sx={{ color: "white" }}
+            >
               {/* SVG X icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"

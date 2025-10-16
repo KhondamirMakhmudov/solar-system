@@ -10,19 +10,34 @@ const DeleteModal = ({ open, onClose, deleting, title, children }) => {
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: 400,
-          bgcolor: "white",
+          bgcolor: "#555b64",
+
           boxShadow: 24,
           p: 4,
           borderRadius: "8px",
         }}
       >
-        <Typography>{title}</Typography>
+        <Typography sx={{ fontFamily: "Manrope", color: "white" }}>
+          {title}
+        </Typography>
 
         {children}
 
-        <div className="flex justify-end gap-1 mt-4">
+        <div className="flex gap-1 mt-4 manrope">
           <Button
-            sx={{ boxShadow: "none", backgroundColor: "#4182F9" }}
+            sx={{
+              boxShadow: "none",
+              backgroundColor: "#C9C9C9",
+              width: "50%",
+              color: "black",
+              boxShadow: "none",
+              "&hover": {
+                boxShadow: 14,
+              },
+              textTransform: "initial",
+              fontSize: "15px",
+              fontFamily: "Manrope",
+            }}
             onClick={onClose}
             variant="contained"
           >
@@ -37,6 +52,10 @@ const DeleteModal = ({ open, onClose, deleting, title, children }) => {
               "&hover": {
                 boxShadow: 14,
               },
+              width: "50%",
+              textTransform: "initial",
+              fontSize: "15px",
+              fontFamily: "Manrope",
             }}
             onClick={deleting}
           >

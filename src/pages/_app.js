@@ -17,15 +17,17 @@ export default function App({
 }) {
   const [queryClient] = useState(() => reactQueryClient);
   return (
-    <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps?.dehydratedState}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <ClientOnlyToaster />
-      </Hydrate>
-    </QueryClientProvider>
+    <SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps?.dehydratedState}>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <ClientOnlyToaster />
+        </Hydrate>
+      </QueryClientProvider>
+    </SessionProvider>
   );
 }

@@ -13,8 +13,11 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import NodeGroup from "@/components/nodes";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { useSession } from "next-auth/react";
+import ContentLoader from "@/components/loader";
 
 const Index = () => {
+  const { data: session } = useSession();
   const [openId, setOpenId] = useState(null);
   const [showSensitive, setShowSensitive] = useState(false);
   const [copiedField, setCopiedField] = useState(null);
@@ -26,6 +29,11 @@ const Index = () => {
   } = useGetPythonQuery({
     key: KEYS.connects,
     url: URLS.connects,
+    headers: {
+      Authorization: `Bearer ${session?.accessToken}`,
+      Accept: "application/json",
+    },
+    enabled: !!session?.accessToken,
   });
 
   const handleToggle = (id) => {
@@ -38,6 +46,14 @@ const Index = () => {
     setCopiedField(field);
     setTimeout(() => setCopiedField(null), 1500);
   };
+
+  if (isLoading || isFetching) {
+    return (
+      <DashboardLayout headerTitle={"Коннекты"}>
+        <ContentLoader />
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout headerTitle={"Коннекты"}>

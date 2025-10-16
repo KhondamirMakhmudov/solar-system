@@ -9,8 +9,11 @@ import useGetPythonQuery from "@/hooks/python/useGetQuery";
 import { KEYS } from "@/constants/key";
 import { URLS } from "@/constants/url";
 import { get } from "lodash";
+import { useSession } from "next-auth/react";
+import ContentLoader from "@/components/loader";
 
 const Index = () => {
+  const { data: session } = useSession();
   const {
     data: company,
     isLoading: isLoadingCompany,
@@ -18,8 +21,20 @@ const Index = () => {
   } = useGetPythonQuery({
     key: KEYS.company,
     url: URLS.company,
+    headers: {
+      Authorization: `Bearer ${session?.accessToken}`,
+      Accept: "application/json",
+    },
+    enabled: !!session?.accessToken,
   });
 
+  if (isLoadingCompany || isFetchingCompany) {
+    return (
+      <DashboardLayout>
+        <ContentLoader />
+      </DashboardLayout>
+    );
+  }
   return (
     <DashboardLayout headerTitle={"Главная"}>
       {/* <div className="grid grid-cols-12 gap-4 my-[20px] bg-[#1A132A] shadow-md p-[20px] rounded-lg border border-[#555555] divide-x divide-[#555555] manrope">

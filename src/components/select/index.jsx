@@ -46,7 +46,7 @@ const CustomSelect = ({
     : options;
 
   return (
-    <div className={`relative w-full ${className}`} ref={selectRef}>
+    <div className={`relative w-full rounded-md ${className}`} ref={selectRef}>
       {label && (
         <label className="block mb-1 text-sm text-gray-700">
           {label}
@@ -58,7 +58,7 @@ const CustomSelect = ({
         type="button"
         onClick={toggleDropdown}
         className={clsx(
-          "w-full h-[55px] border rounded-md p-2 text-[15px] text-left text-black flex items-center justify-between focus:outline-none focus:ring-2",
+          "w-full h-[55px] border rounded-md p-2 text-[15px] text-left bg-[#374151] text-gray-100 flex items-center justify-between focus:outline-none focus:ring-2",
           error
             ? "border-red-500 focus:ring-red-500"
             : "border-gray-300 focus:ring-blue-500"
@@ -75,14 +75,14 @@ const CustomSelect = ({
       </button>
 
       {isOpen && (
-        <ul className="absolute z-9999 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+        <ul className="absolute z-9999 mt-2 w-full bg-[#374151] text-gray-100 border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
           {finalOptions.map((opt, idx) => (
             <li
               key={idx}
               className={clsx(
-                "px-4 py-2 hover:bg-blue-100 cursor-pointer",
+                "px-4 py-2 hover:bg-[#555b64] cursor-pointer",
                 (returnObject ? value?.value : value) === opt.value &&
-                  "bg-blue-50 font-medium"
+                  "bg-[#555b64] font-medium"
               )}
               onClick={() => handleSelect(opt)}
             >

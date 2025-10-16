@@ -1,61 +1,124 @@
+"use client";
+
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Input from "@/components/input";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, Alert } from "@mui/material";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function Home() {
+  const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const result = await signIn("credentials", {
+        username,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError("Неверное имя пользователя или пароль");
+        setIsLoading(false);
+        return;
+      }
+
+      if (result?.ok) {
+        router.push("/dashboard/main");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Произошла ошибка при входе");
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="h-screen">
-      <div className="grid grid-cols-12 gap-2 place-items-center bg-[#0F0A1E] manrope h-full">
-        <div className="lg:col-span-6 col-span-12 flex justify-center p-[32px] bg-[#1A132A] rounded-md">
-          <div className="w-[430px]">
+    <div className="min-h-screen bg-[#0F0A1E] manrope">
+      <div className="grid lg:grid-cols-2 min-h-screen">
+        {/* Login Form Section */}
+        <div className="flex items-center justify-center p-8 bg-[#1A132A]">
+          <div className="w-full max-w-[430px]">
             <Typography
               variant="h4"
               component="h1"
               gutterBottom
-              sx={{ color: "white" }}
+              sx={{ color: "white", fontWeight: 600 }}
             >
               Войти в систему
             </Typography>
-
-            <p className="text-sm text-gray-400 mb-5">
+            <p className="text-sm text-gray-400 mb-8">
               Добро пожаловать в систему мониторинга солнечных панелей
             </p>
-            <div className="space-y-[20px]">
-              <Input placeholder={"Имя пользователя"} />
-              <Input placeholder={"Пароль"} isPassword={true} type="password" />
 
-              <Link href={"/dashboard/main"}>
-                <Button
-                  sx={{
-                    backgroundColor: "#6E39CB",
-                    color: "#FFFFFF",
-                    height: "45px",
-                    borderRadius: "8px",
-                    textTransform: "none",
-                    fontSize: "17px",
-                    fontWeight: "600",
-                    width: "100%",
-                    fontFamily: "Manrope, sans-serif",
-                    "&:hover": {
-                      backgroundColor: "#A877FD",
-                    },
-                  }}
-                >
-                  {" "}
-                  Войти
-                </Button>
-              </Link>
-            </div>
+            {error && (
+              <Alert severity="error" sx={{ mb: 3 }}>
+                {error}
+              </Alert>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <Input
+                placeholder="Имя пользователя"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                disabled={isLoading}
+                required
+              />
+              <Input
+                placeholder="Пароль"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
+                required
+              />
+
+              <Button
+                type="submit"
+                fullWidth
+                disabled={isLoading}
+                sx={{
+                  backgroundColor: "#6E39CB",
+                  color: "#FFFFFF",
+                  height: "45px",
+                  borderRadius: "8px",
+                  textTransform: "none",
+                  fontSize: "17px",
+                  fontWeight: "600",
+                  fontFamily: "Manrope, sans-serif",
+                  "&:hover": {
+                    backgroundColor: "#A877FD",
+                  },
+                  "&:disabled": {
+                    backgroundColor: "#4A2B8A",
+                    color: "#B8B8B8",
+                  },
+                }}
+              >
+                {isLoading ? "Вход..." : "Войти"}
+              </Button>
+            </form>
           </div>
         </div>
-        <div className="col-span-6 bg-[#6E39CB] h-screen y-[10px] p-2 w-full lg:flex hidden items-center justify-center">
+
+        {/* Image Section */}
+        <div className="hidden lg:flex items-center justify-center bg-[#6E39CB] p-8">
           <Image
-            src={"/icons/solar-system.svg"}
-            alt="solar"
+            src="/icons/solar-system.svg"
+            alt="Солнечная система"
             width={600}
             height={600}
-            className="bg-transparent"
+            priority
           />
         </div>
       </div>

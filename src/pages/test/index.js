@@ -1,95 +1,82 @@
-import { useEffect, useState } from "react";
+"use client";
 
-const WebSocketPage = () => {
-  const [data, setData] = useState([]);
-  const [selectedName, setSelectedName] = useState(null);
+import { signOut } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
+import { Button } from "@mui/material";
 
-  useEffect(() => {
-    const socket = new WebSocket("ws://10.20.6.64:80/ws");
+export default function DashboardPage() {
+  const { data: session, status } = useSession();
 
-    socket.onopen = () => {
-      console.log("✅ WebSocket connected");
-    };
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
 
-    socket.onmessage = (event) => {
-      try {
-        const parsed = JSON.parse(event.data);
-        setData((prev) => {
-          // eski ma’lumotlar ichida shu unique_key bo‘lsa — yangilaymiz
-          const existing = prev.filter(
-            (item) => item.unique_key !== parsed.unique_key
-          );
-          return [...existing, parsed];
-        });
-      } catch (err) {
-        console.warn("⚠️ Not JSON:", event.data);
-      }
-    };
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-white text-xl">Загрузка...</p>
+      </div>
+    );
+  }
 
-    socket.onclose = () => {
-      console.log("❌ WebSocket disconnected");
-    };
+  if (session?.error === "RefreshAccessTokenError") {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <p className="text-white text-xl mb-4">Сессия истекла</p>
+          <p className="text-gray-400">Перенаправление на страницу входа...</p>
+        </div>
+      </div>
+    );
+  }
 
-    return () => socket.close();
-  }, []);
-
-  // barcha name’larni unique qilib olish (tablar uchun)
-  const names = [...new Set(data.map((item) => item.name))];
-
-  // hozirgi tanlangan tab bo‘yicha filtr
-  const filtered = selectedName
-    ? data.filter((item) => item.name === selectedName)
-    : [];
+  console.log(session?.error, "session");
 
   return (
-    <div className="p-6">
-      {/* Tabs */}
-      <div className="flex gap-2 mb-6 border-b border-gray-300">
-        {names.map((name) => (
-          <button
-            key={name}
-            onClick={() => setSelectedName(name)}
-            className={`px-4 py-2 rounded-t-md transition-all ${
-              selectedName === name
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 hover:bg-gray-200"
-            }`}
-          >
-            {name}
-          </button>
-        ))}
+    <div className="p-8 min-h-screen bg-[#0F0A1E]">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Панель управления</h1>
+          <p className="text-gray-400 mt-2">
+            Добро пожаловать, {session?.user?.name}!
+          </p>
+        </div>
+
+        <Button
+          onClick={handleSignOut}
+          sx={{
+            backgroundColor: "#6E39CB",
+            color: "#FFFFFF",
+            height: "40px",
+            borderRadius: "8px",
+            textTransform: "none",
+            fontSize: "15px",
+            fontWeight: "600",
+            px: 3,
+            "&:hover": {
+              backgroundColor: "#A877FD",
+            },
+          }}
+        >
+          Выйти
+        </Button>
       </div>
 
-      {/* Data Table */}
-      {selectedName ? (
-        <div className="bg-white rounded-lg shadow p-4">
-          <h2 className="text-xl font-semibold mb-4">{selectedName}</h2>
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b">
-                <th className="p-2">Node Name</th>
-                <th className="p-2">Value</th>
-                <th className="p-2">Updated At</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((item) => (
-                <tr key={item.unique_key} className="border-b hover:bg-gray-50">
-                  <td className="p-2">{item.node_name}</td>
-                  <td className="p-2 font-medium">{item.value}</td>
-                  <td className="p-2 text-sm text-gray-500">
-                    {new Date(item.date_app_timestamp).toLocaleTimeString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Your dashboard content here */}
+      <div className="text-white">
+        <p>Содержимое панели мониторинга солнечных панелей</p>
+
+        {/* Display token info for debugging */}
+        <div className="mt-8 p-4 bg-[#1A132A] rounded-lg">
+          <h3 className="text-lg font-semibold mb-2">Информация о сессии:</h3>
+          <p className="text-sm text-gray-400">
+            Пользователь: {session?.user?.name}
+          </p>
+          <p className="text-sm text-gray-400">
+            Токен доступа: {session?.accessToken ? "Активен" : "Отсутствует"}
+          </p>
         </div>
-      ) : (
-        <p className="text-gray-600">Tab tanlang ⬆️</p>
-      )}
+      </div>
     </div>
   );
-};
-
-export default WebSocketPage;
+}
