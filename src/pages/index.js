@@ -61,7 +61,7 @@ export default function Home() {
             </p>
 
             {error && (
-              <Alert severity="error" sx={{ mb: 3 }}>
+              <Alert severity="error" sx={{ mb: 3, fontFamily: "Manrope" }}>
                 {error}
               </Alert>
             )}

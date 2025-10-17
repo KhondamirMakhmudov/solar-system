@@ -351,7 +351,7 @@ const MapOfUz = ({ color = "#6635BC", markersData = [] }) => {
           {/* Content */}
           <div
             className="p-6 space-y-4 overflow-y-auto"
-            style={{ maxHeight: "calc(100% - 180px)" }}
+            style={{ maxHeight: "calc(100% - 130px)" }}
           >
             {/* Coordinates Card */}
             <div className="bg-[#0F0A1E] rounded-lg p-4 border border-[#2A1F3C]">
@@ -428,14 +428,6 @@ const MapOfUz = ({ color = "#6635BC", markersData = [] }) => {
           </div>
 
           {/* Footer */}
-          <div className="bg-[#0F0A1E] border-t border-[#2A1F3C] px-6 py-4">
-            <button
-              onClick={() => setSelectedMarker(null)}
-              className="w-full bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-semibold py-3 rounded-lg transition-all duration-200 transform hover:scale-[1.02]"
-            >
-              Close Details
-            </button>
-          </div>
         </div>
       )}
     </div>

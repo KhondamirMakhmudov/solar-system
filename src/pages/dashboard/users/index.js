@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { KEYS } from "@/constants/key";
 import { URLS } from "@/constants/url";
 import useGetPythonQuery from "@/hooks/python/useGetQuery";
 import DashboardLayout from "@/layouts/dashboard/DashboardLayout";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CustomTable from "@/components/table";
@@ -18,10 +18,15 @@ import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { config } from "@/config";
 import DeleteModal from "@/components/modal/delete-modal";
-
+import { useRouter } from "next/router";
+import { TableRows, GridView } from "@mui/icons-material";
+import { motion } from "framer-motion";
+import UserCard from "@/components/card/UserCard";
 const Index = () => {
+  const router = useRouter();
   const { data: session } = useSession();
   const queryClient = useQueryClient();
+  const [activeTab, setActiveTab] = useState("table");
   const [createModal, setCreateModal] = useState(false);
   const [selectUser, setSelectUser] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -35,6 +40,7 @@ const Index = () => {
   });
   const {
     data: users,
+    error,
     isLoading: isLoadingUsers,
     isFetching: isFetchingUsers,
   } = useGetPythonQuery({
@@ -47,18 +53,34 @@ const Index = () => {
     enabled: !!session?.accessToken,
   });
 
+  // useEffect(() => {
+  //   if (!session?.accessToken) {
+  //     signOut({ callbackUrl: "/" });
+  //     return;
+  //   }
+
+  //   if (
+  //     error?.response?.status === 401 ||
+  //     error?.detail === "Token has expired"
+  //   ) {
+  //     // Agar next-auth ishlatilsa:
+  //     // signOut();
+  //     signOut({ callbackUrl: "/" });
+  //   }
+  // }, [session, error, router]);
+
   const {
     data: company,
     isLoading: isLoadingCompany,
     isFetching: isFetchingCompany,
   } = useGetPythonQuery({
-    key: KEYS.company,
+    key: [KEYS.company.createModal],
     url: URLS.company,
     headers: {
       Authorization: `Bearer ${session?.accessToken}`,
       Accept: "application/json",
     },
-    enabled: !!session?.accessToken,
+    enabled: !!session?.accessToken && !!createModal,
   });
 
   const companyOptions = get(company, "data.data", []).map((company) => ({
@@ -88,7 +110,7 @@ const Index = () => {
       },
       {
         onSuccess: () => {
-          toast.success("Checkpoint muvaffaqiyatli tahrirlandi", {
+          toast.success("пользователь успешно создан", {
             position: "top-center",
           });
           setCreateModal(false);
@@ -151,6 +173,7 @@ const Index = () => {
     },
     { accessorKey: "first_name", header: "Имя" },
     { accessorKey: "last_name", header: "Фамилия" },
+    { accessorKey: "username", header: "Имя пользователя" },
     {
       accessorKey: "role",
       header: "Роль",
@@ -211,31 +234,77 @@ const Index = () => {
 
   return (
     <DashboardLayout headerTitle={"Пользователи"}>
-      <div className="my-[15px]">
+      <div className="flex items-center justify-between my-[15px]">
+        {/* Tugma */}
         <Button
           onClick={() => setCreateModal(true)}
           sx={{
             textTransform: "initial",
-            fontFamily: "DM Sans, sans-serif",
             backgroundColor: "#6E39CB",
             boxShadow: "none",
             color: "white",
-            display: "flex", // inline-block emas
+            display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: "4px",
+            gap: "6px",
             fontSize: "14px",
-            minWidth: "100px", // yoki widthni kengroq bering
-            borderRadius: "8px",
+            padding: "8px 16px",
+            borderRadius: "10px",
             fontFamily: "Manrope",
+            "&:hover": {
+              backgroundColor: "#5b2bb3",
+              boxShadow: "none",
+            },
           }}
           variant="contained"
         >
           Создать
         </Button>
+
+        {/* Tab switch */}
+        <div className="relative flex items-center bg-gradient-to-r from-[#5B2BB3]/80 to-[#6E39CB]/80 dark:from-[#4B1E97]/90 dark:to-[#5C2DBD]/90 p-[6px] rounded-2xl shadow-md backdrop-blur-md">
+          {/* Table button */}
+          <button
+            onClick={() => setActiveTab("table")}
+            className={`z-10 flex items-center justify-center w-12 h-10 rounded-xl transition-all ${
+              activeTab === "table"
+                ? "text-white scale-110 bg-white/20 backdrop-blur-sm rounded-xl shadow-sm"
+                : "text-white/60 hover:text-white/80"
+            }`}
+          >
+            <TableRows fontSize="small" />
+          </button>
+
+          {/* Card button */}
+          <button
+            onClick={() => setActiveTab("card")}
+            className={`z-10 flex items-center justify-center w-12 h-10 rounded-xl transition-all ${
+              activeTab === "card"
+                ? "text-white scale-110 bg-white/20 backdrop-blur-sm rounded-xl shadow-sm"
+                : "text-white/60 hover:text-white/80"
+            }`}
+          >
+            <GridView fontSize="small" />
+          </button>
+        </div>
       </div>
+
       <div className="my-[15px]">
-        <CustomTable columns={columns} data={get(users, "data.data", [])} />
+        {activeTab === "table" && (
+          <CustomTable columns={columns} data={get(users, "data.data", [])} />
+        )}
+
+        {activeTab === "card" && (
+          <div className="flex gap-4">
+            {get(users, "data.data", []).map((user) => (
+              <UserCard
+                user={user}
+                setSelectUser={setSelectUser}
+                setDeleteModal={setDeleteModal}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {createModal && (

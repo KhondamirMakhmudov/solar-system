@@ -33,9 +33,11 @@ import GroupIcon from "@mui/icons-material/Group";
 import Link from "next/link";
 import RecyclingIcon from "@mui/icons-material/Recycling";
 import LinkIcon from "@mui/icons-material/Link";
+import HubIcon from "@mui/icons-material/Hub";
 import useGetPythonQuery from "@/hooks/python/useGetQuery";
 import { KEYS } from "@/constants/key";
 import { URLS } from "@/constants/url";
+import { get } from "lodash";
 
 const menuItems = [
   {
@@ -57,16 +59,22 @@ const menuItems = [
   },
 
   {
+    text: "Узлы",
+    icon: <HubIcon />,
+    path: "/dashboard/nodes",
+  },
+
+  {
     text: "Пользователи",
     icon: <GroupIcon />,
     path: "/dashboard/users",
   },
 
-  {
-    text: "Настройки",
-    icon: <SettingsRoundedIcon />,
-    path: "/dashboard/settings",
-  },
+  // {
+  //   text: "Настройки",
+  //   icon: <SettingsRoundedIcon />,
+  //   path: "/dashboard/settings",
+  // },
 ];
 
 export default function Sidebar({ isOpen = true }) {
@@ -337,8 +345,11 @@ export default function Sidebar({ isOpen = true }) {
 
               {isOpen && (
                 <div className="text-white">
-                  <h4 className="text-[15px]">John Johnson</h4>
-                  <p className="text-sm">john@commerce.com</p>
+                  <h4 className="text-[15px]">
+                    {get(getMe, "data.first_name", "")}{" "}
+                    {get(getMe, "data.last_name", "")}
+                  </h4>
+                  <p className="text-sm">{get(getMe, "data.username", "")}</p>
                 </div>
               )}
             </div>
@@ -364,7 +375,7 @@ export default function Sidebar({ isOpen = true }) {
           >
             <div className="border border-[#555555] bg-[#1A132A] rounded-lg gap-y-[8px] shadow-md">
               <Link
-                href={"#"}
+                href={"/dashboard/settings"}
                 className={`flex p-[8px] hover:bg-[#312b3f] rounded-lg text-white items-center ${
                   isOpen ? "gap-2" : "justify-center"
                 } transition-all duration-300`}

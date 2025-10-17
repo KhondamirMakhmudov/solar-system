@@ -19,7 +19,7 @@ function StatCard({ title, percent, value, unit, subtitle }) {
           )}
         </div>
         <p className="text-[28px] text-[#6E39CB] font-bold">
-          <CountUp end={value} decimals={2} separator="," duration={2} /> {unit}
+          <CountUp end={value} decimals={0} separator="," duration={2} /> {unit}
         </p>
         {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
       </div>
